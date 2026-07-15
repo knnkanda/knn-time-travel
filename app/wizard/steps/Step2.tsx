@@ -32,7 +32,7 @@ export default function Step2() {
   };
 
   const handleLoverChange = (value: string) => {
-    updateData({ lover: { name: value } });
+    updateData({ lover: { ...data.lover, name: value } });
   };
 
   const handleFriendChange = (field: string, value: string) => {
