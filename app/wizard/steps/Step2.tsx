@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useWizard } from "../WizardContext";
-import { parseBirthDate, calculateAge } from "@/lib/inputFormatter";
+import { createBirthDate, calculateAge } from "@/lib/inputFormatter";
 
 const colors = {
   primary: "#FF69B4",
@@ -20,8 +20,20 @@ const characterPresets = [
   "同級生の親友",
 ];
 
+// 生年月日の年月日を分けて管理
+interface BirthDateFields {
+  year: string;
+  month: string;
+  day: string;
+}
+
 export default function Step2() {
   const { data, updateData } = useWizard();
+  const [birthDateFields, setBirthDateFields] = useState<BirthDateFields>({
+    year: "",
+    month: "",
+    day: "",
+  });
   const [birthDateError, setBirthDateError] = useState("");
   const [calculatedAge, setCalculatedAge] = useState<number | null>(null);
 
@@ -41,26 +53,21 @@ export default function Step2() {
     });
   };
 
-  const handleBirthDateChange = (input: string) => {
+  const handleBirthDateFieldChange = (field: keyof BirthDateFields, value: string) => {
+    const newFields = { ...birthDateFields, [field]: value };
+    setBirthDateFields(newFields);
     setBirthDateError("");
     setCalculatedAge(null);
 
-    if (!input.trim()) {
-      updateData({ mainCharacter: { ...data.mainCharacter, birthDate: "" } });
-      return;
-    }
-
-    const parsed = parseBirthDate(input);
-    if (parsed) {
-      updateData({ mainCharacter: { ...data.mainCharacter, birthDate: parsed } });
-      const age = calculateAge(parsed);
+    const birthDate = createBirthDate(newFields.year, newFields.month, newFields.day);
+    if (birthDate) {
+      updateData({ mainCharacter: { ...data.mainCharacter, birthDate } });
+      const age = calculateAge(birthDate);
       if (age !== null) {
         setCalculatedAge(age);
       }
-    } else {
-      setBirthDateError(
-        "形式が正しくありません。YYYY-MM-DD、YYYY/MM/DD、YYYYMMDD、または YYYY年MM月DD日 の形式で入力してください。"
-      );
+    } else if (newFields.year && newFields.month && newFields.day) {
+      setBirthDateError("生年月日が正しくありません（年：1900-2025、月：1-12、日：1-31）");
     }
   };
 
@@ -84,16 +91,53 @@ export default function Step2() {
             className="w-full px-4 py-2 border-2 rounded-lg"
             style={{ borderColor: colors.primary }}
           />
-          <input
-            type="text"
-            placeholder="19610315 または 1961-03-15 （全角・半角OK）"
-            value={data.mainCharacter.birthDate}
-            onChange={(e) => handleBirthDateChange(e.target.value)}
-            className="w-full px-4 py-2 border-2 rounded-lg"
-            style={{
-              borderColor: birthDateError ? "#ff6b6b" : colors.primary,
-            }}
-          />
+          <div className="flex gap-2 items-end">
+            <div className="flex-1">
+              <label className="block text-xs font-semibold mb-1" style={{ color: colors.dark }}>
+                年
+              </label>
+              <input
+                type="text"
+                placeholder="1961"
+                value={birthDateFields.year}
+                onChange={(e) => handleBirthDateFieldChange("year", e.target.value)}
+                className="w-full px-3 py-2 border-2 rounded-lg text-sm"
+                style={{
+                  borderColor: birthDateError ? "#ff6b6b" : colors.primary,
+                }}
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block text-xs font-semibold mb-1" style={{ color: colors.dark }}>
+                月
+              </label>
+              <input
+                type="text"
+                placeholder="3"
+                value={birthDateFields.month}
+                onChange={(e) => handleBirthDateFieldChange("month", e.target.value)}
+                className="w-full px-3 py-2 border-2 rounded-lg text-sm"
+                style={{
+                  borderColor: birthDateError ? "#ff6b6b" : colors.primary,
+                }}
+              />
+            </div>
+            <div className="flex-1">
+              <label className="block text-xs font-semibold mb-1" style={{ color: colors.dark }}>
+                日
+              </label>
+              <input
+                type="text"
+                placeholder="15"
+                value={birthDateFields.day}
+                onChange={(e) => handleBirthDateFieldChange("day", e.target.value)}
+                className="w-full px-3 py-2 border-2 rounded-lg text-sm"
+                style={{
+                  borderColor: birthDateError ? "#ff6b6b" : colors.primary,
+                }}
+              />
+            </div>
+          </div>
           {calculatedAge !== null && (
             <p className="text-sm font-semibold" style={{ color: colors.primary }}>
               🎂 年齢：{calculatedAge}歳

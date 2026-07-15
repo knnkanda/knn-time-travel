@@ -11,49 +11,38 @@ export function parseYear(input: string): number | null {
   return year;
 }
 
-// 生年月日を YYYY-MM-DD フォーマットに正規化
-// 優先順: YYYYMMDD (8桁) → YYYY-MM-DD / YYYY/MM/DD → YYYY年MM月DD日
+// シンプル版：年月日の数値から YYYY-MM-DD を生成
+export function createBirthDate(year: number | string, month: number | string, day: number | string): string | null {
+  const y = String(year).trim();
+  const m = String(month).trim();
+  const d = String(day).trim();
+
+  if (!y || !m || !d) return null;
+
+  const yearNum = parseInt(y, 10);
+  const monthNum = parseInt(m, 10);
+  const dayNum = parseInt(d, 10);
+
+  if (isNaN(yearNum) || isNaN(monthNum) || isNaN(dayNum)) return null;
+  if (yearNum < 1900 || yearNum > 2025) return null;
+  if (monthNum < 1 || monthNum > 12) return null;
+  if (dayNum < 1 || dayNum > 31) return null;
+
+  return `${yearNum}-${String(monthNum).padStart(2, "0")}-${String(dayNum).padStart(2, "0")}`;
+}
+
+// 互換性用：従来の parseBirthDate は廃止予定
 export function parseBirthDate(input: string): string | null {
   if (!input || !input.trim()) return null;
+  const half = toHalfWidth(input).trim();
 
-  // ステップ1: 全角数字を半角に変換
-  let normalized = toHalfWidth(input).trim();
-
-  // ステップ2: 区切り文字と日本語を削除
-  normalized = normalized
-    .replace(/[-－−]/g, "")      // ハイフン（全角・半角）を削除
-    .replace(/[／/]/g, "")       // スラッシュを削除
-    .replace(/年/g, "")          // 「年」を削除
-    .replace(/月/g, "")          // 「月」を削除
-    .replace(/日/g, "");         // 「日」を削除
-
-  // ステップ3: YYYYMMDD 形式（8桁）を優先処理
+  // YYYYMMDD 形式のみサポート（シンプル化）
   const eightDigitPattern = /^(\d{4})(\d{2})(\d{2})$/;
-  const match8 = normalized.match(eightDigitPattern);
-  if (match8) {
-    const [, year, month, day] = match8;
-    const m = parseInt(month, 10);
-    const d = parseInt(day, 10);
-    if (m >= 1 && m <= 12 && d >= 1 && d <= 31) {
-      return `${year}-${month}-${day}`;
-    }
-  }
+  const match = half.match(eightDigitPattern);
 
-  // ステップ4: YYYY-MM-DD または YYYY/MM/DD 形式を処理
-  const separatedPattern = /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/;
-  const match = normalized.match(separatedPattern);
   if (match) {
     const [, year, month, day] = match;
-    const m = parseInt(month, 10);
-    const d = parseInt(day, 10);
-    if (m >= 1 && m <= 12 && d >= 1 && d <= 31) {
-      return `${year}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-    }
-  }
-
-  // ステップ5: すでに YYYY-MM-DD の場合
-  if (/^\d{4}-\d{2}-\d{2}$/.test(normalized)) {
-    return normalized;
+    return createBirthDate(year, month, day);
   }
 
   return null;
