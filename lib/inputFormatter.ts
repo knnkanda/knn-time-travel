@@ -14,10 +14,20 @@ export function parseYear(input: string): number | null {
 // 生年月日を YYYY-MM-DD フォーマットに正規化
 // 対応フォーマット: YYYY/MM/DD, YYYY-MM-DD, YYYYMMDD, YYYY年MM月DD日
 export function parseBirthDate(input: string): string | null {
-  const half = toHalfWidth(input).trim();
+  let normalized = toHalfWidth(input).trim();
 
-  // YYYY-MM-DD または YYYY/MM/DD
-  const datePattern1 = /^(\d{4})[-\/](\d{1,2})[-\/](\d{1,2})$/;
+  // 全角の区切り文字を半角に変換
+  normalized = normalized
+    .replace(/－/g, "-")      // 全角ハイフン → 半角ハイフン
+    .replace(/／/g, "/")      // 全角スラッシュ → 半角スラッシュ
+    .replace(/年/g, "-")       // 「年」→ 「-」
+    .replace(/月/g, "-")       // 「月」→ 「-」
+    .replace(/日/g, "");       // 「日」→ 削除
+
+  const half = normalized;
+
+  // YYYY-MM-DD、YYYY/MM/DD、YYYY-MM-DD（変換後）
+  const datePattern1 = /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/;
   const match1 = half.match(datePattern1);
   if (match1) {
     const [, year, month, day] = match1;
