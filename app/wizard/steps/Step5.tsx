@@ -12,7 +12,7 @@ const colors = {
 
 export default function Step5() {
   const { data } = useWizard();
-  const [selectedImageType, setSelectedImageType] = useState<string>("bookcover");
+  const [selectedImageType, setSelectedImageType] = useState<string>("");
 
   const generatePrompt = () => {
     const eraInfo = getEraDescription(data.year);
