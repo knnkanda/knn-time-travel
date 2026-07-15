@@ -150,6 +150,49 @@ export default function Step3() {
         />
       </div>
 
+      {/* Free Text Items */}
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>
+            思い出の品①（任意）
+          </label>
+          <input
+            type="text"
+            placeholder="例: 手紙、写真、レコード、制服..."
+            value={data.freeItem1}
+            onChange={(e) => updateData({ freeItem1: e.target.value })}
+            className="w-full px-4 py-2 border-2 rounded-lg"
+            style={{ borderColor: colors.primary }}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>
+            思い出の品②（任意）
+          </label>
+          <input
+            type="text"
+            placeholder="例: 日記、香水、本、ノート..."
+            value={data.freeItem2}
+            onChange={(e) => updateData({ freeItem2: e.target.value })}
+            className="w-full px-4 py-2 border-2 rounded-lg"
+            style={{ borderColor: colors.primary }}
+          />
+        </div>
+        <div>
+          <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>
+            思い出の品③（任意）
+          </label>
+          <input
+            type="text"
+            placeholder="例: ラジカセ、定期券、チケット、切り抜き..."
+            value={data.freeItem3}
+            onChange={(e) => updateData({ freeItem3: e.target.value })}
+            className="w-full px-4 py-2 border-2 rounded-lg"
+            style={{ borderColor: colors.primary }}
+          />
+        </div>
+      </div>
+
       {/* Free Keywords */}
       <div>
         <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>

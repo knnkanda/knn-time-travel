@@ -35,6 +35,9 @@ export interface WizardData {
   event: string;
   freeKeywords: string;
   japaneseMovie: string;
+  freeItem1: string;
+  freeItem2: string;
+  freeItem3: string;
 
   // STEP 4: Story & Style
   storyTheme: string;
@@ -57,6 +60,9 @@ const defaultData: WizardData = {
   event: "",
   freeKeywords: "",
   japaneseMovie: "",
+  freeItem1: "",
+  freeItem2: "",
+  freeItem3: "",
   storyTheme: "",
   writingStyle: "",
   authorName: "",

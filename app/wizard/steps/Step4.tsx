@@ -75,6 +75,11 @@ ${data.media.map((med) => `    - "${med}"`).join("\n") || "    - 未選択"}
   event: "${data.event}"
   japaneseMovie: "${data.japaneseMovie}"
 
+  freeItems:
+    item1: "${data.freeItem1}"
+    item2: "${data.freeItem2}"
+    item3: "${data.freeItem3}"
+
   keywords: |
 ${data.freeKeywords
   .split("\n")
