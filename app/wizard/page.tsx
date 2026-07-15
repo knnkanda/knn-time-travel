@@ -5,6 +5,7 @@ import Step1 from "./steps/Step1";
 import Step2 from "./steps/Step2";
 import Step3 from "./steps/Step3";
 import Step4 from "./steps/Step4";
+import Step5 from "./steps/Step5";
 
 const colors = {
   primary: "#FF69B4",
@@ -22,6 +23,7 @@ function WizardContent() {
     { num: 2, label: "登場人物", component: Step2 },
     { num: 3, label: "舞台・シチュエーション", component: Step3 },
     { num: 4, label: "ストーリー・作風", component: Step4 },
+    { num: 5, label: "プロンプト生成", component: Step5 },
   ];
 
   const CurrentStep = steps[currentStep - 1].component;
@@ -111,14 +113,23 @@ function WizardContent() {
           </button>
           {currentStep === 4 ? (
             <button
+              onClick={() => setCurrentStep(5)}
               className="px-8 py-3 rounded-lg font-semibold text-white transition-all"
               style={{ backgroundColor: colors.primary }}
             >
               ✨ プロンプト生成へ進む
             </button>
+          ) : currentStep === 5 ? (
+            <button
+              disabled
+              className="px-8 py-3 rounded-lg font-semibold text-white transition-all disabled:opacity-50"
+              style={{ backgroundColor: "#999" }}
+            >
+              ✅ 完了
+            </button>
           ) : (
             <button
-              onClick={() => setCurrentStep(Math.min(4, currentStep + 1))}
+              onClick={() => setCurrentStep(Math.min(5, currentStep + 1))}
               className="px-8 py-3 rounded-lg font-semibold text-white transition-all"
               style={{ backgroundColor: colors.primary }}
             >
