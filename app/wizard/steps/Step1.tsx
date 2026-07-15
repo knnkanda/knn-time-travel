@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useWizard } from "../WizardContext";
 import { yearToEra } from "@/lib/eraConverter";
 import { parseYear } from "@/lib/inputFormatter";
@@ -22,9 +23,12 @@ const colors = {
 
 export default function Step1() {
   const { data, updateData } = useWizard();
+  const [yearInput, setYearInput] = useState(String(data.year || ""));
 
   const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
+    setYearInput(input);
+
     const parsed = parseYear(input);
     if (parsed && parsed >= 1950 && parsed <= 2026) {
       updateData({ year: parsed });
@@ -55,7 +59,7 @@ export default function Step1() {
             <input
               type="text"
               placeholder="1950〜2026（全角・半角OK）"
-              value={data.year}
+              value={yearInput}
               onChange={handleYearChange}
               className="px-4 py-3 border-2 rounded-lg text-lg font-semibold flex-1"
               style={{ borderColor: colors.primary, color: colors.dark }}
