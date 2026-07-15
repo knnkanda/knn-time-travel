@@ -1,23 +1,7 @@
 import CTAButton from "@/components/CTAButton";
+import SampleNovel from "@/components/SampleNovel";
 
 export default function Home() {
-  const sampleText = `1983年、昭和58年の夏。神戸の駅前にあった喫茶店「オアシス」。
-窓から見える大丸百貨店の看板の向こうに、明石海峡の薄い光が見えた。
-ラジオからは「キャッツ・アイ」が流れていて、
-お調子者の親友・田中は相変わらず舌打ちをしながら、
-ココアをフーフーと冷ましていた。
-
-「なあ、進学先ほんまに決まった？」
-
-壁のポスターには、アグネス・ラムの笑顔が貼ってある。
-あのテレビCMの『ダッシュ！』の娘だ。
-田中が唐突に叫んだ。
-
-「ねえ、アグネス・ラム、かわいいと思わん？」
-
-僕は何も答えず、窓の外を見つめていた。
-その時だった——あの子が歩いてきたのは。`;
-
   const colors = {
     primary: "#FF69B4",
     secondary: "#FFB6D9",
@@ -68,28 +52,7 @@ export default function Home() {
         </section>
 
         {/* Sample Novel */}
-        <section
-          className="bg-white rounded-lg shadow-md p-8 md:p-10 mb-12"
-          style={{ borderLeft: `4px solid ${colors.primary}` }}
-        >
-          <h2
-            className="text-xl md:text-2xl font-bold mb-6"
-            style={{ color: colors.dark }}
-          >
-            生成される小説の例
-          </h2>
-          <div className="p-6 rounded-lg" style={{ backgroundColor: colors.light }}>
-            <p
-              className="text-base md:text-lg leading-relaxed whitespace-pre-wrap"
-              style={{ color: colors.dark }}
-            >
-              {sampleText}
-            </p>
-          </div>
-          <p className="text-sm text-gray-500 mt-4 italic">
-            ※ サンプルです。実際の小説はあなたの思い出や時代設定に合わせて生成されます。
-          </p>
-        </section>
+        <SampleNovel />
 
         {/* Feature Highlights */}
         <section className="grid md:grid-cols-3 gap-6 mb-12">
