@@ -86,7 +86,7 @@ export default function Step2() {
           />
           <input
             type="text"
-            placeholder="YYYY-MM-DD or YYYYMMDD or YYYY年MM月DD日"
+            placeholder="19610315 または 1961-03-15 （全角・半角OK）"
             value={data.mainCharacter.birthDate}
             onChange={(e) => handleBirthDateChange(e.target.value)}
             className="w-full px-4 py-2 border-2 rounded-lg"

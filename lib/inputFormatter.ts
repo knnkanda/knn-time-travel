@@ -12,37 +12,26 @@ export function parseYear(input: string): number | null {
 }
 
 // 生年月日を YYYY-MM-DD フォーマットに正規化
-// 対応フォーマット: YYYY/MM/DD, YYYY-MM-DD, YYYYMMDD, YYYY年MM月DD日
+// 優先順: YYYYMMDD (8桁) → YYYY-MM-DD / YYYY/MM/DD → YYYY年MM月DD日
 export function parseBirthDate(input: string): string | null {
+  if (!input || !input.trim()) return null;
+
+  // ステップ1: 全角数字を半角に変換
   let normalized = toHalfWidth(input).trim();
 
-  // 全角の区切り文字を半角に変換
+  // ステップ2: 全角の区切り文字を削除・統一
   normalized = normalized
-    .replace(/－/g, "-")      // 全角ハイフン → 半角ハイフン
-    .replace(/／/g, "/")      // 全角スラッシュ → 半角スラッシュ
-    .replace(/年/g, "-")       // 「年」→ 「-」
-    .replace(/月/g, "-")       // 「月」→ 「-」
-    .replace(/日/g, "");       // 「日」→ 削除
+    .replace(/[－−−]/g, "")    // 全角・半角ハイフンを削除
+    .replace(/[／/]/g, "")      // スラッシュを削除
+    .replace(/年/g, "")         // 「年」を削除
+    .replace(/月/g, "")         // 「月」を削除
+    .replace(/日/g, "");        // 「日」を削除
 
-  const half = normalized;
-
-  // YYYY-MM-DD、YYYY/MM/DD、YYYY-MM-DD（変換後）
-  const datePattern1 = /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/;
-  const match1 = half.match(datePattern1);
-  if (match1) {
-    const [, year, month, day] = match1;
-    const m = parseInt(month, 10);
-    const d = parseInt(day, 10);
-    if (m >= 1 && m <= 12 && d >= 1 && d <= 31) {
-      return `${year}-${String(m).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
-    }
-  }
-
-  // YYYYMMDD
-  const datePattern2 = /^(\d{4})(\d{2})(\d{2})$/;
-  const match2 = half.match(datePattern2);
-  if (match2) {
-    const [, year, month, day] = match2;
+  // ステップ3: YYYYMMDD 形式（8桁）を優先処理
+  const eightDigitPattern = /^(\d{4})(\d{2})(\d{2})$/;
+  const match8 = normalized.match(eightDigitPattern);
+  if (match8) {
+    const [, year, month, day] = match8;
     const m = parseInt(month, 10);
     const d = parseInt(day, 10);
     if (m >= 1 && m <= 12 && d >= 1 && d <= 31) {
@@ -50,11 +39,11 @@ export function parseBirthDate(input: string): string | null {
     }
   }
 
-  // YYYY年MM月DD日
-  const datePattern3 = /^(\d{4})年(\d{1,2})月(\d{1,2})日$/;
-  const match3 = half.match(datePattern3);
-  if (match3) {
-    const [, year, month, day] = match3;
+  // ステップ4: YYYY-MM-DD または YYYY/MM/DD 形式を処理
+  const separatedPattern = /^(\d{4})[-/](\d{1,2})[-/](\d{1,2})$/;
+  const match = normalized.match(separatedPattern);
+  if (match) {
+    const [, year, month, day] = match;
     const m = parseInt(month, 10);
     const d = parseInt(day, 10);
     if (m >= 1 && m <= 12 && d >= 1 && d <= 31) {
@@ -62,9 +51,9 @@ export function parseBirthDate(input: string): string | null {
     }
   }
 
-  // すでに YYYY-MM-DD の場合
-  if (/^\d{4}-\d{2}-\d{2}$/.test(half)) {
-    return half;
+  // ステップ5: すでに YYYY-MM-DD の場合
+  if (/^\d{4}-\d{2}-\d{2}$/.test(normalized)) {
+    return normalized;
   }
 
   return null;
