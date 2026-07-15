@@ -30,6 +30,53 @@ const writingStyles = [
 export default function Step4() {
   const { data, updateData } = useWizard();
 
+  const downloadParameters = () => {
+    const paramText = `【KNNタイムトラベル - 入力パラメータ】
+作成日時: ${new Date().toLocaleString("ja-JP")}
+
+========== STEP 1: いつ・どこで ==========
+年: ${data.year}
+都道府県: ${data.prefecture}
+市町村: ${data.city}
+
+========== STEP 2: 登場人物 ==========
+【主人公】
+名前: ${data.mainCharacter.name}
+生年月日: ${data.mainCharacter.birthDate}
+性別: ${data.mainCharacter.gender}
+
+【恋愛・憧れ】
+恋人・片思い・初恋: ${data.lover.name} (${data.lover.type})
+憧れの人・タレント・スポーツ選手: ${data.admiration?.name} (${data.admiration?.type})
+
+【親友】
+名前: ${data.friend.name}
+キャラクター: ${data.friend.character}
+
+========== STEP 3: 舞台・シチュエーション ==========
+舞台: ${data.locations.join("、") || "未選択"}
+流れるメディア: ${data.media.join("、") || "未選択"}
+季節: ${data.season}
+イベント: ${data.event}
+思い出の邦画: ${data.japaneseMovie}
+思い出キーワード:
+${data.freeKeywords}
+
+========== STEP 4: ストーリー・作風 ==========
+ストーリーの課題: ${data.storyTheme}
+作風: ${data.writingStyle}
+作者名: ${data.authorName}
+`;
+
+    const element = document.createElement("a");
+    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(paramText));
+    element.setAttribute("download", `knn-timetravel-params-${Date.now()}.txt`);
+    element.style.display = "none";
+    document.body.appendChild(element);
+    element.click();
+    document.body.removeChild(element);
+  };
+
   return (
     <div className="bg-white rounded-lg shadow-md p-8 space-y-6">
       <h2 className="text-2xl font-bold mb-6" style={{ color: colors.dark }}>
@@ -103,6 +150,23 @@ export default function Step4() {
       <div className="p-4 rounded-lg" style={{ backgroundColor: colors.light }}>
         <p className="text-sm" style={{ color: colors.dark }}>
           💡 <strong>作風選択のコツ:</strong> 著者の書き方を参考にした「オリジナル文体」で生成されます。歌詞や実在人物の台詞は引用されません。
+        </p>
+      </div>
+
+      {/* Download Parameters */}
+      <div className="p-4 rounded-lg border-2" style={{ backgroundColor: colors.light, borderColor: colors.primary }}>
+        <p className="text-sm font-semibold mb-3" style={{ color: colors.dark }}>
+          📥 入力パラメータをテキストで保存
+        </p>
+        <button
+          onClick={downloadParameters}
+          className="w-full px-6 py-3 rounded-lg font-bold text-white transition-all"
+          style={{ backgroundColor: colors.primary }}
+        >
+          📥 パラメータをダウンロード
+        </button>
+        <p className="text-xs mt-2" style={{ color: colors.dark }}>
+          入力した内容をテキストファイルで保存できます。後で見直したい時に便利です。
         </p>
       </div>
 

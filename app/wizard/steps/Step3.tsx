@@ -135,6 +135,21 @@ export default function Step3() {
         </div>
       </div>
 
+      {/* Japanese Movie */}
+      <div>
+        <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>
+          思い出の邦画（任意）
+        </label>
+        <input
+          type="text"
+          placeholder="例: 映画『時をかける少女』が好きだった など"
+          value={data.japaneseMovie}
+          onChange={(e) => updateData({ japaneseMovie: e.target.value })}
+          className="w-full px-4 py-3 border-2 rounded-lg"
+          style={{ borderColor: colors.primary }}
+        />
+      </div>
+
       {/* Free Keywords */}
       <div>
         <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>
