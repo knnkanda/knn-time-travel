@@ -8,20 +8,6 @@ const colors = {
   light: "#F5F5F5",
 };
 
-const writingStyles = [
-  "片岡義男風（都会的で洗練）",
-  "村上龍風（激烈で危険）",
-  "村上春樹風（不思議で叙情的）",
-  "夏目漱石風（古典的で深い）",
-  "谷崎潤一郎風（官能的で美しい）",
-  "シンプル・ナチュラル",
-];
-
-const genderMap = {
-  male: "男性",
-  female: "女性",
-  other: "その他",
-};
 
 export default function Step4() {
   const { data, updateData } = useWizard();
@@ -61,11 +47,19 @@ characters:
 
 # STEP 3: 舞台・シチュエーション
 setting:
-  locations:
-${data.locations.map((loc) => `    - "${loc}"`).join("\n") || "    - 未選択"}
+  locations: |
+${data.locations
+  .split("\n")
+  .filter((line) => line.trim())
+  .map((line) => `    ${line}`)
+  .join("\n") || "    未入力"}
 
-  media:
-${data.media.map((med) => `    - "${med}"`).join("\n") || "    - 未選択"}
+  media: |
+${data.media
+  .split("\n")
+  .filter((line) => line.trim())
+  .map((line) => `    ${line}`)
+  .join("\n") || "    未入力"}
 
   season: "${data.season}"
   event: "${data.event}"
@@ -79,6 +73,7 @@ ${data.media.map((med) => `    - "${med}"`).join("\n") || "    - 未選択"}
   keywords: |
 ${data.freeKeywords
   .split("\n")
+  .filter((line) => line.trim())
   .map((line) => `    ${line}`)
   .join("\n") || "    未入力"}
 
@@ -89,13 +84,15 @@ story:
   authorName: "${data.authorName}"
 `;
 
-    const element = document.createElement("a");
-    element.setAttribute("href", "data:text/yaml;charset=utf-8," + encodeURIComponent(yamlContent));
-    element.setAttribute("download", `knn-timetravel-materials-${Date.now()}.yaml`);
-    element.style.display = "none";
-    document.body.appendChild(element);
-    element.click();
-    document.body.removeChild(element);
+    const blob = new Blob([yamlContent], { type: "text/plain;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `knn-timetravel-materials-${Date.now()}.yaml`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   return (
@@ -119,28 +116,19 @@ story:
         />
       </div>
 
-      {/* Writing Style */}
+      {/* Writing Style - Free Text */}
       <div>
-        <h3 className="text-lg font-bold mb-4" style={{ color: colors.dark }}>
-          作風
-        </h3>
-        <div className="space-y-2">
-          {writingStyles.map((style) => (
-            <button
-              key={style}
-              onClick={() => updateData({ writingStyle: style })}
-              className="w-full text-left px-4 py-3 rounded-lg border-2 font-semibold transition-all"
-              style={{
-                backgroundColor:
-                  data.writingStyle === style ? colors.primary : "white",
-                color: data.writingStyle === style ? "white" : colors.dark,
-                borderColor: colors.primary,
-              }}
-            >
-              {style}
-            </button>
-          ))}
-        </div>
+        <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>
+          作風（自由記述）
+        </label>
+        <input
+          type="text"
+          placeholder="例: 片岡義男風、村上春樹風、村上龍風、シンプル・ナチュラル、古典的で叙情的など..."
+          value={data.writingStyle}
+          onChange={(e) => updateData({ writingStyle: e.target.value })}
+          className="w-full px-4 py-3 border-2 rounded-lg"
+          style={{ borderColor: colors.primary }}
+        />
       </div>
 
       {/* Author Name */}
