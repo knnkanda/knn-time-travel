@@ -153,20 +153,20 @@ ${data.freeKeywords}
         </p>
       </div>
 
-      {/* Download Parameters */}
+      {/* Download Materials */}
       <div className="p-4 rounded-lg border-2" style={{ backgroundColor: colors.light, borderColor: colors.primary }}>
         <p className="text-sm font-semibold mb-3" style={{ color: colors.dark }}>
-          📥 入力パラメータをテキストで保存
+          💾 思い出素材をダウンロード
         </p>
         <button
           onClick={downloadParameters}
           className="w-full px-6 py-3 rounded-lg font-bold text-white transition-all"
           style={{ backgroundColor: colors.primary }}
         >
-          📥 パラメータをダウンロード
+          💾 思い出素材をダウンロード
         </button>
         <p className="text-xs mt-2" style={{ color: colors.dark }}>
-          入力した内容をテキストファイルで保存できます。後で見直したい時に便利です。
+          入力した思い出の素材をテキストファイルで保存。後で見直したり、別のAIに使用できます。
         </p>
       </div>
 

@@ -109,16 +109,22 @@ function WizardContent() {
           >
             ← 戻る
           </button>
-          <button
-            onClick={() => setCurrentStep(Math.min(4, currentStep + 1))}
-            disabled={currentStep === 4}
-            className="px-8 py-3 rounded-lg font-semibold text-white transition-all disabled:opacity-50 disabled:cursor-not-allowed"
-            style={{
-              backgroundColor: currentStep === 4 ? "#999" : colors.primary,
-            }}
-          >
-            次へ →
-          </button>
+          {currentStep === 4 ? (
+            <button
+              className="px-8 py-3 rounded-lg font-semibold text-white transition-all"
+              style={{ backgroundColor: colors.primary }}
+            >
+              ✨ プロンプト生成へ進む
+            </button>
+          ) : (
+            <button
+              onClick={() => setCurrentStep(Math.min(4, currentStep + 1))}
+              className="px-8 py-3 rounded-lg font-semibold text-white transition-all"
+              style={{ backgroundColor: colors.primary }}
+            >
+              次へ →
+            </button>
+          )}
         </div>
       </div>
     </div>
