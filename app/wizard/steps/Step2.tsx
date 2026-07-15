@@ -10,16 +10,6 @@ const colors = {
   light: "#F5F5F5",
 };
 
-const characterPresets = [
-  "お調子者のムードメーカー",
-  "無口だが頼れる",
-  "ライバルであり相棒",
-  "秀才メガネ",
-  "不良だが情に厚い",
-  "上級生でかっこいい",
-  "同級生の親友",
-];
-
 // 生年月日の年月日を分けて管理
 interface BirthDateFields {
   year: string;
@@ -283,19 +273,19 @@ export default function Step2() {
             className="w-full px-4 py-2 border-2 rounded-lg"
             style={{ borderColor: colors.primary }}
           />
-          <select
-            value={data.friend.character}
-            onChange={(e) => handleFriendChange("character", e.target.value)}
-            className="w-full px-4 py-2 border-2 rounded-lg"
-            style={{ borderColor: colors.primary }}
-          >
-            <option value="">キャラクター設定（任意）</option>
-            {characterPresets.map((char) => (
-              <option key={char} value={char}>
-                {char}
-              </option>
-            ))}
-          </select>
+          <div>
+            <label className="block text-xs font-semibold mb-1" style={{ color: "#999" }}>
+              キャラクター設定（架空のキャラ）
+            </label>
+            <input
+              type="text"
+              placeholder="例: お調子者のムードメーカー、無口だが頼れる、ライバル、秀才メガネなど..."
+              value={data.friend.character}
+              onChange={(e) => handleFriendChange("character", e.target.value)}
+              className="w-full px-4 py-2 border-2 rounded-lg"
+              style={{ borderColor: colors.primary }}
+            />
+          </div>
         </div>
       </div>
 
