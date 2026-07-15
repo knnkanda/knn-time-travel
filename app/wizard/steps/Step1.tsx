@@ -126,24 +126,27 @@ export default function Step1() {
           </div>
         </div>
 
-        {/* Prefecture Selection */}
+        {/* Prefecture Selection - Grid */}
         <div>
-          <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>
+          <label className="block text-sm font-semibold mb-3" style={{ color: colors.dark }}>
             都道府県を選択してください
           </label>
-          <select
-            value={data.prefecture}
-            onChange={handlePrefectureChange}
-            className="w-full px-4 py-3 border-2 rounded-lg text-base"
-            style={{ borderColor: colors.primary, color: colors.dark }}
-          >
-            <option value="">選択してください</option>
+          <div className="grid grid-cols-4 md:grid-cols-6 gap-2">
             {prefectures.map((pref) => (
-              <option key={pref} value={pref}>
+              <button
+                key={pref}
+                onClick={() => handlePrefectureChange({ target: { value: pref } } as any)}
+                className="px-2 py-2 rounded-lg font-semibold text-sm transition-all border-2"
+                style={{
+                  backgroundColor: data.prefecture === pref ? colors.primary : "white",
+                  color: data.prefecture === pref ? "white" : colors.dark,
+                  borderColor: colors.primary,
+                }}
+              >
                 {pref}
-              </option>
+              </button>
             ))}
-          </select>
+          </div>
         </div>
 
         {/* City Input */}
