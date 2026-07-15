@@ -2,6 +2,7 @@
 
 import { useWizard } from "../WizardContext";
 import { yearToEra } from "@/lib/eraConverter";
+import { parseYear } from "@/lib/inputFormatter";
 
 const prefectures = [
   "北海道", "青森県", "岩手県", "宮城県", "秋田県", "山形県", "福島県",
@@ -23,9 +24,10 @@ export default function Step1() {
   const { data, updateData } = useWizard();
 
   const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const year = parseInt(e.target.value);
-    if (year >= 1950 && year <= 2026) {
-      updateData({ year });
+    const input = e.target.value;
+    const parsed = parseYear(input);
+    if (parsed && parsed >= 1950 && parsed <= 2026) {
+      updateData({ year: parsed });
     }
   };
 
@@ -51,9 +53,8 @@ export default function Step1() {
           </label>
           <div className="flex gap-4 items-center">
             <input
-              type="number"
-              min="1950"
-              max="2026"
+              type="text"
+              placeholder="1950〜2026（全角・半角OK）"
               value={data.year}
               onChange={handleYearChange}
               className="px-4 py-3 border-2 rounded-lg text-lg font-semibold flex-1"

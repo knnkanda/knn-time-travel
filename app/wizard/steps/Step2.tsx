@@ -1,6 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { useWizard } from "../WizardContext";
+import { parseBirthDate, calculateAge } from "@/lib/inputFormatter";
 
 const colors = {
   primary: "#FF69B4",
@@ -20,6 +22,8 @@ const characterPresets = [
 
 export default function Step2() {
   const { data, updateData } = useWizard();
+  const [birthDateError, setBirthDateError] = useState("");
+  const [calculatedAge, setCalculatedAge] = useState<number | null>(null);
 
   const handleMainCharChange = (field: string, value: string) => {
     updateData({
@@ -35,6 +39,29 @@ export default function Step2() {
     updateData({
       friend: { ...data.friend, [field]: value },
     });
+  };
+
+  const handleBirthDateChange = (input: string) => {
+    setBirthDateError("");
+    setCalculatedAge(null);
+
+    if (!input.trim()) {
+      updateData({ mainCharacter: { ...data.mainCharacter, birthDate: "" } });
+      return;
+    }
+
+    const parsed = parseBirthDate(input);
+    if (parsed) {
+      updateData({ mainCharacter: { ...data.mainCharacter, birthDate: parsed } });
+      const age = calculateAge(parsed);
+      if (age !== null) {
+        setCalculatedAge(age);
+      }
+    } else {
+      setBirthDateError(
+        "形式が正しくありません。YYYY-MM-DD、YYYY/MM/DD、YYYYMMDD、または YYYY年MM月DD日 の形式で入力してください。"
+      );
+    }
   };
 
   return (
@@ -58,12 +85,25 @@ export default function Step2() {
             style={{ borderColor: colors.primary }}
           />
           <input
-            type="date"
+            type="text"
+            placeholder="YYYY-MM-DD or YYYYMMDD or YYYY年MM月DD日"
             value={data.mainCharacter.birthDate}
-            onChange={(e) => handleMainCharChange("birthDate", e.target.value)}
+            onChange={(e) => handleBirthDateChange(e.target.value)}
             className="w-full px-4 py-2 border-2 rounded-lg"
-            style={{ borderColor: colors.primary }}
+            style={{
+              borderColor: birthDateError ? "#ff6b6b" : colors.primary,
+            }}
           />
+          {calculatedAge !== null && (
+            <p className="text-sm font-semibold" style={{ color: colors.primary }}>
+              🎂 年齢：{calculatedAge}歳
+            </p>
+          )}
+          {birthDateError && (
+            <p className="text-xs" style={{ color: "#ff6b6b" }}>
+              {birthDateError}
+            </p>
+          )}
           <select
             value={data.mainCharacter.gender}
             onChange={(e) => handleMainCharChange("gender", e.target.value)}
