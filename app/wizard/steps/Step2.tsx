@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useWizard } from "../WizardContext";
-import { createBirthDate, calculateAge } from "@/lib/inputFormatter";
+import { createBirthDate, calculateAge, toHalfWidth } from "@/lib/inputFormatter";
 
 const colors = {
   primary: "#FF69B4",
@@ -54,7 +54,9 @@ export default function Step2() {
   };
 
   const handleBirthDateFieldChange = (field: keyof BirthDateFields, value: string) => {
-    const newFields = { ...birthDateFields, [field]: value };
+    // 全角を半角に変換
+    const halfWidthValue = toHalfWidth(value);
+    const newFields = { ...birthDateFields, [field]: halfWidthValue };
     setBirthDateFields(newFields);
     setBirthDateError("");
     setCalculatedAge(null);
