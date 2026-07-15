@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useWizard } from "../WizardContext";
-import { createBirthDate, calculateAge, toHalfWidth } from "@/lib/inputFormatter";
+import { createBirthDate, calculateAge, calculateAgeAtYear, calculateSchoolGrade, toHalfWidth } from "@/lib/inputFormatter";
 
 const colors = {
   primary: "#FF69B4",
@@ -36,6 +36,7 @@ export default function Step2() {
   });
   const [birthDateError, setBirthDateError] = useState("");
   const [calculatedAge, setCalculatedAge] = useState<number | null>(null);
+  const [ageAtThatTime, setAgeAtThatTime] = useState<number | null>(null);
 
   const handleMainCharChange = (field: string, value: string) => {
     updateData({
@@ -60,6 +61,7 @@ export default function Step2() {
     setBirthDateFields(newFields);
     setBirthDateError("");
     setCalculatedAge(null);
+    setAgeAtThatTime(null);
 
     const birthDate = createBirthDate(newFields.year, newFields.month, newFields.day);
     if (birthDate) {
@@ -67,6 +69,14 @@ export default function Step2() {
       const age = calculateAge(birthDate);
       if (age !== null) {
         setCalculatedAge(age);
+      }
+
+      // 選んだ年での年齢も計算
+      if (data.year) {
+        const ageAtYear = calculateAgeAtYear(birthDate, data.year);
+        if (ageAtYear !== null) {
+          setAgeAtThatTime(ageAtYear);
+        }
       }
     } else if (newFields.year && newFields.month && newFields.day) {
       setBirthDateError("生年月日が正しくありません（年：1900-2025、月：1-12、日：1-31）");
@@ -140,10 +150,17 @@ export default function Step2() {
               />
             </div>
           </div>
-          {calculatedAge !== null && (
-            <p className="text-sm font-semibold" style={{ color: colors.primary }}>
-              🎂 年齢：{calculatedAge}歳
-            </p>
+          {ageAtThatTime !== null && (
+            <div className="space-y-1">
+              <p className="text-sm font-semibold" style={{ color: colors.primary }}>
+                🎂 当時の年齢：{ageAtThatTime}歳 {calculateSchoolGrade(ageAtThatTime)}
+              </p>
+              {calculatedAge !== null && (
+                <p className="text-xs" style={{ color: colors.dark }}>
+                  （現在：{calculatedAge}歳）
+                </p>
+              )}
+            </div>
           )}
           {birthDateError && (
             <p className="text-xs" style={{ color: "#ff6b6b" }}>

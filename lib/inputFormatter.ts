@@ -48,7 +48,7 @@ export function parseBirthDate(input: string): string | null {
   return null;
 }
 
-// 生年月日から年齢を計算
+// 生年月日から現在の年齢を計算
 export function calculateAge(birthDate: string): number | null {
   try {
     const birth = new Date(birthDate);
@@ -67,4 +67,43 @@ export function calculateAge(birthDate: string): number | null {
   } catch {
     return null;
   }
+}
+
+// 特定の年における年齢を計算
+export function calculateAgeAtYear(birthDate: string, targetYear: number): number | null {
+  try {
+    const birth = new Date(birthDate);
+    const birthYear = birth.getFullYear();
+    const birthMonth = birth.getMonth();
+    const birthDay = birth.getDate();
+
+    if (targetYear < birthYear) return null;
+
+    let age = targetYear - birthYear;
+    // 4月1日時点での年齢を基準にする（日本の学年）
+    if (birthMonth < 3 || (birthMonth === 3 && birthDay === 1)) {
+      // 4月1日以前に生まれた場合、すでに1歳加算されている
+    } else {
+      // 4月2日以降に生まれた場合、まだ加算されていない
+      age--;
+    }
+
+    return age;
+  } catch {
+    return null;
+  }
+}
+
+// 年齢から学年を計算（日本の学制）
+export function calculateSchoolGrade(age: number): string {
+  if (age < 6) return "未就学";
+  if (age === 6) return "小学1年";
+  if (age <= 11) return `小学${age - 5}年`;
+  if (age === 12) return "中学1年";
+  if (age <= 14) return `中学${age - 11}年`;
+  if (age === 15) return "高校1年";
+  if (age <= 17) return `高校${age - 14}年`;
+  if (age === 18) return "大学1年";
+  if (age <= 21) return `大学${age - 17}年`;
+  return `社会人${age - 21}年`;
 }
