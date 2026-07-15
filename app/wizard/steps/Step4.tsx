@@ -8,16 +8,6 @@ const colors = {
   light: "#F5F5F5",
 };
 
-const storyThemes = [
-  "初恋と別れ",
-  "親友との喧嘩と和解",
-  "上京前夜",
-  "部活最後の夏",
-  "家族との確執と再生",
-  "淡い三角関係",
-  "夢を追った日々",
-];
-
 const writingStyles = [
   "片岡義男風（都会的で洗練）",
   "村上龍風（激烈で危険）",
@@ -26,6 +16,12 @@ const writingStyles = [
   "谷崎潤一郎風（官能的で美しい）",
   "シンプル・ナチュラル",
 ];
+
+const genderMap = {
+  male: "男性",
+  female: "女性",
+  other: "その他",
+};
 
 export default function Step4() {
   const { data, updateData } = useWizard();
@@ -108,28 +104,19 @@ story:
         STEP 4: ストーリー・作風
       </h2>
 
-      {/* Story Theme */}
+      {/* Story Theme - Free Text */}
       <div>
-        <h3 className="text-lg font-bold mb-4" style={{ color: colors.dark }}>
-          ストーリーの課題
-        </h3>
-        <div className="space-y-2">
-          {storyThemes.map((theme) => (
-            <button
-              key={theme}
-              onClick={() => updateData({ storyTheme: theme })}
-              className="w-full text-left px-4 py-3 rounded-lg border-2 font-semibold transition-all"
-              style={{
-                backgroundColor:
-                  data.storyTheme === theme ? colors.primary : "white",
-                color: data.storyTheme === theme ? "white" : colors.dark,
-                borderColor: colors.primary,
-              }}
-            >
-              {theme}
-            </button>
-          ))}
-        </div>
+        <label className="block text-lg font-bold mb-2" style={{ color: colors.dark }}>
+          当時のシチュエーション（自由記述）
+        </label>
+        <textarea
+          placeholder="例: 初恋で胸を焦がしていた、親友と喧嘩して悔しかった、受験勉強の真っ最中、将来への不安と期待が混在していた時期... 当時の心情や状況を自由に書いてください"
+          value={data.storyTheme}
+          onChange={(e) => updateData({ storyTheme: e.target.value })}
+          className="w-full px-4 py-3 border-2 rounded-lg"
+          style={{ borderColor: colors.primary }}
+          rows={5}
+        />
       </div>
 
       {/* Writing Style */}
