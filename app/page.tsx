@@ -11,10 +11,26 @@ export default function Home() {
 
 その時だった——あの子が歩いてきたのは。`;
 
+  const colors = {
+    primary: "#FF69B4",
+    secondary: "#FFB6D9",
+    accent: "#E91E63",
+    dark: "#333333",
+    light: "#F5F5F5",
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-knn-light">
+    <div
+      className="min-h-screen flex flex-col"
+      style={{ backgroundColor: colors.light }}
+    >
       {/* Header */}
-      <header className="bg-gradient-to-r from-knn-primary to-knn-accent text-white py-8 px-4 shadow-lg">
+      <header
+        className="text-white py-8 px-4 shadow-lg"
+        style={{
+          background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})`,
+        }}
+      >
         <div className="max-w-4xl mx-auto text-center">
           <h1 className="text-5xl md:text-6xl font-bold mb-2">
             『KNNタイムトラベル』
@@ -29,7 +45,10 @@ export default function Home() {
       <main className="flex-1 max-w-4xl mx-auto px-4 py-12 md:py-16">
         {/* Tagline */}
         <section className="text-center mb-12">
-          <p className="text-2xl md:text-3xl font-bold text-knn-dark leading-relaxed mb-4">
+          <p
+            className="text-2xl md:text-3xl font-bold leading-relaxed mb-4"
+            style={{ color: colors.dark }}
+          >
             『あの夏、あの街、あの曲。
             <br />
             あなただけの青春が、一冊の小説になる。』
@@ -42,12 +61,21 @@ export default function Home() {
         </section>
 
         {/* Sample Novel */}
-        <section className="bg-white rounded-lg shadow-md p-8 md:p-10 mb-12 border-l-4 border-knn-primary">
-          <h2 className="text-xl md:text-2xl font-bold text-knn-dark mb-6">
+        <section
+          className="bg-white rounded-lg shadow-md p-8 md:p-10 mb-12"
+          style={{ borderLeft: `4px solid ${colors.primary}` }}
+        >
+          <h2
+            className="text-xl md:text-2xl font-bold mb-6"
+            style={{ color: colors.dark }}
+          >
             生成される小説の例
           </h2>
-          <div className="bg-knn-light p-6 rounded-lg">
-            <p className="text-base md:text-lg leading-relaxed text-knn-dark whitespace-pre-wrap">
+          <div className="p-6 rounded-lg" style={{ backgroundColor: colors.light }}>
+            <p
+              className="text-base md:text-lg leading-relaxed whitespace-pre-wrap"
+              style={{ color: colors.dark }}
+            >
               {sampleText}
             </p>
           </div>
@@ -58,20 +86,44 @@ export default function Home() {
 
         {/* Feature Highlights */}
         <section className="grid md:grid-cols-3 gap-6 mb-12">
-          <div className="bg-white rounded-lg shadow-md p-6 border-t-4 border-knn-primary">
-            <h3 className="text-lg font-bold text-knn-dark mb-3">🎵 時代考証</h3>
+          <div
+            className="bg-white rounded-lg shadow-md p-6"
+            style={{ borderTop: `4px solid ${colors.primary}` }}
+          >
+            <h3
+              className="text-lg font-bold mb-3"
+              style={{ color: colors.dark }}
+            >
+              🎵 時代考証
+            </h3>
             <p className="text-gray-600 text-sm md:text-base">
               その時代のヒット曲、テレビ番組、CM、事件など、当時の空気をリアルに織り込みます。
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-md p-6 border-t-4 border-knn-accent">
-            <h3 className="text-lg font-bold text-knn-dark mb-3">💰 完全無料</h3>
+          <div
+            className="bg-white rounded-lg shadow-md p-6"
+            style={{ borderTop: `4px solid ${colors.accent}` }}
+          >
+            <h3
+              className="text-lg font-bold mb-3"
+              style={{ color: colors.dark }}
+            >
+              💰 完全無料
+            </h3>
             <p className="text-gray-600 text-sm md:text-base">
               運営者のAPI負担ゼロ。あなたの思い出は安全に、データは一切保存されません。
             </p>
           </div>
-          <div className="bg-white rounded-lg shadow-md p-6 border-t-4 border-knn-secondary">
-            <h3 className="text-lg font-bold text-knn-dark mb-3">📚 出版可能</h3>
+          <div
+            className="bg-white rounded-lg shadow-md p-6"
+            style={{ borderTop: `4px solid ${colors.secondary}` }}
+          >
+            <h3
+              className="text-lg font-bold mb-3"
+              style={{ color: colors.dark }}
+            >
+              📚 出版可能
+            </h3>
             <p className="text-gray-600 text-sm md:text-base">
               生成した小説をPDF・Markdown形式でダウンロード。表紙付きで完成度の高い一冊に。
             </p>
@@ -85,7 +137,10 @@ export default function Home() {
               // TODO: Navigate to wizard step 1
               console.log("Navigate to wizard");
             }}
-            className="bg-gradient-to-r from-knn-primary to-knn-accent text-white font-bold text-xl md:text-2xl px-10 md:px-16 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95"
+            className="text-white font-bold text-xl md:text-2xl px-10 md:px-16 py-6 rounded-full shadow-lg hover:shadow-xl transition-all duration-200 transform hover:scale-105 active:scale-95"
+            style={{
+              background: `linear-gradient(to right, ${colors.primary}, ${colors.accent})`,
+            }}
           >
             小説をつくる
           </button>
