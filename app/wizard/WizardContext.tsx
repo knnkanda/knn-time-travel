@@ -28,6 +28,7 @@ export interface WizardData {
   friend: {
     name: string;
     character: string;
+    relationship: string;
   };
 
   // STEP 3: Setting
@@ -55,7 +56,7 @@ const defaultData: WizardData = {
   mainCharacter: { name: "", birthDate: "", gender: "other" },
   lover: { name: "", type: "恋人", ageAtThatTime: undefined },
   admiration: { name: "", type: "憧れの人", ageAtThatTime: undefined },
-  friend: { name: "", character: "" },
+  friend: { name: "", character: "", relationship: "" },
   locations: "",
   media: "",
   season: "",

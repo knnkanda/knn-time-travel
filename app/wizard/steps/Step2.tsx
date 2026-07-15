@@ -328,6 +328,19 @@ export default function Step2() {
           />
           <div>
             <label className="block text-xs font-semibold mb-1" style={{ color: "#999" }}>
+              関係性（任意）
+            </label>
+            <input
+              type="text"
+              placeholder="例: 同級生、先輩、後輩、サークルの友人、幼なじみなど..."
+              value={data.friend.relationship}
+              onChange={(e) => handleFriendChange("relationship", e.target.value)}
+              className="w-full px-4 py-2 border-2 rounded-lg"
+              style={{ borderColor: colors.primary }}
+            />
+          </div>
+          <div>
+            <label className="block text-xs font-semibold mb-1" style={{ color: "#999" }}>
               キャラクター設定（架空のキャラ）
             </label>
             <input
