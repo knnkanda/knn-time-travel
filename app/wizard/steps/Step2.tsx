@@ -118,19 +118,92 @@ export default function Step2() {
         </div>
       </div>
 
-      {/* Lover */}
+      {/* Lover & Admiration */}
       <div className="border-l-4 pl-4" style={{ borderColor: colors.primary }}>
         <h3 className="text-lg font-bold mb-4" style={{ color: colors.dark }}>
-          恋人（架空可）
+          恋愛・憧れ（架空可）
         </h3>
-        <input
-          type="text"
-          placeholder="名前"
-          value={data.lover.name}
-          onChange={(e) => handleLoverChange(e.target.value)}
-          className="w-full px-4 py-2 border-2 rounded-lg"
-          style={{ borderColor: colors.primary }}
-        />
+        <div className="space-y-4">
+          {/* Lover */}
+          <div>
+            <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>
+              恋人・片思い・初恋
+            </label>
+            <div className="space-y-2">
+              <select
+                value={data.lover.type || "恋人"}
+                onChange={(e) =>
+                  updateData({
+                    lover: {
+                      ...data.lover,
+                      type: e.target.value as "恋人" | "片思い" | "初恋",
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border-2 rounded-lg"
+                style={{ borderColor: colors.primary }}
+              >
+                <option value="恋人">恋人</option>
+                <option value="片思い">片思い</option>
+                <option value="初恋">初恋</option>
+              </select>
+              <input
+                type="text"
+                placeholder="名前（任意）"
+                value={data.lover.name}
+                onChange={(e) =>
+                  updateData({ lover: { ...data.lover, name: e.target.value } })
+                }
+                className="w-full px-4 py-2 border-2 rounded-lg"
+                style={{ borderColor: colors.primary }}
+              />
+            </div>
+          </div>
+
+          {/* Admiration */}
+          <div>
+            <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>
+              憧れの人・タレント・スポーツ選手
+            </label>
+            <div className="space-y-2">
+              <select
+                value={data.admiration?.type || "憧れの人"}
+                onChange={(e) =>
+                  updateData({
+                    admiration: {
+                      name: data.admiration?.name || "",
+                      type: e.target.value as
+                        | "憧れの人"
+                        | "好きなタレント"
+                        | "スポーツ選手",
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border-2 rounded-lg"
+                style={{ borderColor: colors.primary }}
+              >
+                <option value="憧れの人">憧れの人</option>
+                <option value="好きなタレント">好きなタレント</option>
+                <option value="スポーツ選手">スポーツ選手</option>
+              </select>
+              <input
+                type="text"
+                placeholder="名前（任意）"
+                value={data.admiration?.name || ""}
+                onChange={(e) =>
+                  updateData({
+                    admiration: {
+                      name: e.target.value,
+                      type: data.admiration?.type || "憧れの人",
+                    },
+                  })
+                }
+                className="w-full px-4 py-2 border-2 rounded-lg"
+                style={{ borderColor: colors.primary }}
+              />
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* Friend */}
