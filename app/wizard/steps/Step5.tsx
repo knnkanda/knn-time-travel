@@ -70,18 +70,21 @@ ${data.freeKeywords}
   };
 
   const openInChatGPT = () => {
-    const encodedPrompt = encodeURIComponent(prompt);
-    window.open(`https://chat.openai.com/?q=${encodedPrompt}`, "_blank");
+    navigator.clipboard.writeText(prompt);
+    window.open("https://chat.openai.com/", "_blank");
+    alert("プロンプトをコピーしました！\nChatGPT が開きます。\nテキストボックスに貼り付けてご使用ください。");
   };
 
   const openInClaude = () => {
-    const encodedPrompt = encodeURIComponent(prompt);
-    window.open(`https://claude.ai/?q=${encodedPrompt}`, "_blank");
+    navigator.clipboard.writeText(prompt);
+    window.open("https://claude.ai/", "_blank");
+    alert("プロンプトをコピーしました！\nClaude が開きます。\nテキストボックスに貼り付けてご使用ください。");
   };
 
   const openInGemini = () => {
-    const encodedPrompt = encodeURIComponent(prompt);
-    window.open(`https://gemini.google.com/?q=${encodedPrompt}`, "_blank");
+    navigator.clipboard.writeText(prompt);
+    window.open("https://gemini.google.com/", "_blank");
+    alert("プロンプトをコピーしました！\nGemini が開きます。\nテキストボックスに貼り付けてご使用ください。");
   };
 
   return (
@@ -120,21 +123,21 @@ ${data.freeKeywords}
             className="px-4 py-2 rounded-lg font-bold text-white text-sm transition-all"
             style={{ backgroundColor: "#10a37f" }}
           >
-            ChatGPT
+            📋 ChatGPT で開く
           </button>
           <button
             onClick={openInClaude}
             className="px-4 py-2 rounded-lg font-bold text-white text-sm transition-all"
             style={{ backgroundColor: "#1f2937" }}
           >
-            Claude
+            📋 Claude で開く
           </button>
           <button
             onClick={openInGemini}
             className="px-4 py-2 rounded-lg font-bold text-white text-sm transition-all"
             style={{ backgroundColor: "#3b82f6" }}
           >
-            Gemini
+            📋 Gemini で開く
           </button>
         </div>
       </div>
@@ -146,8 +149,9 @@ ${data.freeKeywords}
         </p>
         <ul className="text-xs mt-2 space-y-1" style={{ color: colors.dark }}>
           <li>1. 「プロンプトをコピー」でテキストをコピー</li>
-          <li>2. または「ChatGPT」「Claude」「Gemini」ボタンで直接開く</li>
-          <li>3. AIが青春小説を生成します</li>
+          <li>2. または「ChatGPT/Claude/Gemini で開く」ボタンをクリック</li>
+          <li className="text-xs font-semibold">　　↓ ボタンをクリックすると、プロンプトがコピーされて AI が開きます</li>
+          <li>3. AI のテキストボックスに貼り付けて、青春小説を生成</li>
           <li>4. 生成後、思い出素材ファイル（YAML）と組み合わせてグラフィックレコーディング化</li>
         </ul>
       </div>
