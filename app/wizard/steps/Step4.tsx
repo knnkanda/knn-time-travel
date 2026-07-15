@@ -30,47 +30,67 @@ const writingStyles = [
 export default function Step4() {
   const { data, updateData } = useWizard();
 
-  const downloadParameters = () => {
-    const paramText = `【KNNタイムトラベル - 入力パラメータ】
-作成日時: ${new Date().toLocaleString("ja-JP")}
+  const downloadMaterials = () => {
+    const yamlContent = `# KNNタイムトラベル - 思い出素材
+metadata:
+  createdAt: "${new Date().toISOString()}"
+  title: "思い出素材 - グラフィックレコーディング用"
 
-========== STEP 1: いつ・どこで ==========
-年: ${data.year}
-都道府県: ${data.prefecture}
-市町村: ${data.city}
+# STEP 1: いつ・どこで
+timeline:
+  year: ${data.year}
+  era: ""
+  location:
+    prefecture: "${data.prefecture}"
+    city: "${data.city}"
 
-========== STEP 2: 登場人物 ==========
-【主人公】
-名前: ${data.mainCharacter.name}
-生年月日: ${data.mainCharacter.birthDate}
-性別: ${data.mainCharacter.gender}
+# STEP 2: 登場人物
+characters:
+  mainCharacter:
+    name: "${data.mainCharacter.name}"
+    birthDate: "${data.mainCharacter.birthDate}"
+    gender: "${data.mainCharacter.gender}"
 
-【恋愛・憧れ】
-恋人・片思い・初恋: ${data.lover.name} (${data.lover.type})
-憧れの人・タレント・スポーツ選手: ${data.admiration?.name} (${data.admiration?.type})
+  lover:
+    name: "${data.lover.name}"
+    type: "${data.lover.type}"
 
-【親友】
-名前: ${data.friend.name}
-キャラクター: ${data.friend.character}
+  admiration:
+    name: "${data.admiration?.name || ""}"
+    type: "${data.admiration?.type || ""}"
 
-========== STEP 3: 舞台・シチュエーション ==========
-舞台: ${data.locations.join("、") || "未選択"}
-流れるメディア: ${data.media.join("、") || "未選択"}
-季節: ${data.season}
-イベント: ${data.event}
-思い出の邦画: ${data.japaneseMovie}
-思い出キーワード:
-${data.freeKeywords}
+  friend:
+    name: "${data.friend.name}"
+    character: "${data.friend.character}"
 
-========== STEP 4: ストーリー・作風 ==========
-ストーリーの課題: ${data.storyTheme}
-作風: ${data.writingStyle}
-作者名: ${data.authorName}
+# STEP 3: 舞台・シチュエーション
+setting:
+  locations:
+${data.locations.map((loc) => `    - "${loc}"`).join("\n") || "    - 未選択"}
+
+  media:
+${data.media.map((med) => `    - "${med}"`).join("\n") || "    - 未選択"}
+
+  season: "${data.season}"
+  event: "${data.event}"
+  japaneseMovie: "${data.japaneseMovie}"
+
+  keywords: |
+${data.freeKeywords
+  .split("\n")
+  .map((line) => `    ${line}`)
+  .join("\n") || "    未入力"}
+
+# STEP 4: ストーリー・作風
+story:
+  theme: "${data.storyTheme}"
+  style: "${data.writingStyle}"
+  authorName: "${data.authorName}"
 `;
 
     const element = document.createElement("a");
-    element.setAttribute("href", "data:text/plain;charset=utf-8," + encodeURIComponent(paramText));
-    element.setAttribute("download", `knn-timetravel-params-${Date.now()}.txt`);
+    element.setAttribute("href", "data:text/yaml;charset=utf-8," + encodeURIComponent(yamlContent));
+    element.setAttribute("download", `knn-timetravel-materials-${Date.now()}.yaml`);
     element.style.display = "none";
     document.body.appendChild(element);
     element.click();
@@ -159,11 +179,11 @@ ${data.freeKeywords}
           💾 思い出素材をダウンロード
         </p>
         <button
-          onClick={downloadParameters}
+          onClick={downloadMaterials}
           className="w-full px-6 py-3 rounded-lg font-bold text-white transition-all"
           style={{ backgroundColor: colors.primary }}
         >
-          💾 思い出素材をダウンロード
+          💾 思い出素材をダウンロード（YAML）
         </button>
         <p className="text-xs mt-2" style={{ color: colors.dark }}>
           入力した思い出の素材をテキストファイルで保存。後で見直したり、別のAIに使用できます。
