@@ -29,8 +29,8 @@ export interface WizardData {
   };
 
   // STEP 3: Setting
-  locations: string[];
-  media: string[];
+  locations: string;
+  media: string;
   season: string;
   event: string;
   freeKeywords: string;
@@ -54,8 +54,8 @@ const defaultData: WizardData = {
   lover: { name: "", type: "恋人" },
   admiration: { name: "", type: "憧れの人" },
   friend: { name: "", character: "" },
-  locations: [],
-  media: [],
+  locations: "",
+  media: "",
   season: "",
   event: "",
   freeKeywords: "",
