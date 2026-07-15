@@ -1,6 +1,7 @@
 "use client";
 
 import { useWizard } from "../WizardContext";
+import { getEraDescription } from "@/lib/eraData";
 
 const colors = {
   primary: "#FF69B4",
@@ -12,21 +13,24 @@ export default function Step5() {
   const { data } = useWizard();
 
   const generatePrompt = () => {
+    const eraInfo = getEraDescription(data.year);
+
     const prompt = `以下の情報をもとに、思い出の青春小説を生成してください。
 
 【時代背景】
 年：${data.year}年
 場所：${data.prefecture}${data.city}
 
+${eraInfo ? `\n${eraInfo}\n` : ""}
+
 【主人公】
 名前：${data.mainCharacter.name}
 生年月日：${data.mainCharacter.birthDate}
 性別：${data.mainCharacter.gender}
-当時の年齢：${data.mainCharacter.birthDate ? "計算結果" : "未設定"}
 
 【登場人物】
 恋人・片思い・初恋：${data.lover.name}（${data.lover.type}）
-憧れの人：${data.admiration?.name || "未設定"}
+憧れの人・タレント・スポーツ選手：${data.admiration?.name || "未設定"}${data.admiration?.type ? `（${data.admiration.type}）` : ""}
 親友：${data.friend.name}${data.friend.character ? `（${data.friend.character}）` : ""}
 
 【舞台・シチュエーション】
@@ -53,7 +57,8 @@ ${data.freeKeywords}
 
 【生成指示】
 - 上記の情報を織り込んだ、5000字程度の青春小説を生成してください
-- 当時の時代背景（流行、風俗、社会情勢）を自然に組み込んでください
+- 当時の時代背景（テレビ番組、流行、有名人、社会情勢）を自然に組み込んでください
+- チャンネルをまわすと当時のテレビ番組が流れている、ラジオから当時のヒット曲が聞こえるような時代背景の空気感を大切に
 - 実在の人物名や著作権保護の楽曲歌詞は引用しないでください
 - 架空の設定や人物でも構いません
 - 主人公の視点で、思い出の時間を蘇らせるような文体で
