@@ -22,3 +22,33 @@
 body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
+
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes buttonPulse {
+  0%, 100% {
+    box-shadow: 0 10px 25px rgba(255, 105, 180, 0.3);
+  }
+  50% {
+    box-shadow: 0 15px 35px rgba(233, 30, 99, 0.5);
+  }
+}
+
+.gradient-animate {
+  background-size: 200% 200%;
+  animation: gradientShift 6s ease infinite;
+}
+
+.button-pulse {
+  animation: buttonPulse 3s ease-in-out infinite;
+}
