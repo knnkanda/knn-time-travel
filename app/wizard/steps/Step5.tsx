@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useWizard } from "../WizardContext";
 import { getEraDescription } from "@/lib/eraData";
 
@@ -11,6 +12,7 @@ const colors = {
 
 export default function Step5() {
   const { data } = useWizard();
+  const [selectedImageType, setSelectedImageType] = useState<string>("bookcover");
 
   const generatePrompt = () => {
     const eraInfo = getEraDescription(data.year);
@@ -67,7 +69,43 @@ ${data.freeKeywords}
     return prompt;
   };
 
+  const generateImagePrompt = (type: string): string => {
+    const year = data.year;
+    const title = `思い出の青春　${year}年`;
+
+    const imagePrompts: { [key: string]: string } = {
+      bookcover: `【ブックカバー：ハードカバー小説】
+タイトル：『${title}』
+著者：${data.authorName}
+
+実写写真風の美しいブックカバー。${data.year}年の${data.prefecture}${data.city}の情景を背景に、主人公${data.mainCharacter.name}が思い出の相手${data.lover.name}と過ごした瞬間が優しく表現されている。帯には「${data.storyTheme}」というキャッチコピーがついている。レトロで温かみのあるデザイン。高級感のあるハードカバー。`,
+
+      movieposter: `【映画ポスター風】
+映画タイトル：『${data.mainCharacter.name}の${data.year}年』
+主演：${data.mainCharacter.name}
+
+${data.year}年の${data.prefecture}、${data.season}の情景を背景に、青春映画のポスター。主人公と${data.lover.name}が光に包まれている。映画館で見かけるような魅力的で洗練されたポスター風デザイン。`,
+
+      graphicrecording: `【グラフィックレコーディング風】
+タイトル：『${data.mainCharacter.name}の記憶の地図　${data.year}年』
+
+思い出の舞台（${data.locations}）、登場人物（${data.mainCharacter.name}、${data.lover.name}、${data.friend.name}）、流れていたメディア（${data.media}）が、カラフルなイラストと手書き文字で立体的に記録されている。思い出の品（${data.freeItem1}、${data.freeItem2}、${data.freeItem3}）も可愛らしく描かれている。`,
+
+      presentation: `【プレゼン風スライド】
+テーマ：『${data.mainCharacter.name}の${data.year}年スタディーズ』
+
+${data.year}年の時代背景、主人公の心情、当時の流行、思い出の瞬間がプレゼンテーション資料風にまとめられている。グラフ、イラスト、タイムラインなどを含む。プロフェッショナルで視覚的に分かりやすいデザイン。`,
+
+      freetext: `${data.freeKeywords}
+
+上記のキーワードをもとに、${data.year}年の${data.prefecture}を舞台にした、${data.mainCharacter.name}と${data.lover.name}の思い出を表現した画像を生成してください。当時の雰囲気、${data.season}の季節感、${data.storyTheme}という心情を反映させてください。`,
+    };
+
+    return imagePrompts[type] || imagePrompts.freetext;
+  };
+
   const prompt = generatePrompt();
+  const imagePrompt = generateImagePrompt(selectedImageType);
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(prompt);
@@ -98,13 +136,77 @@ ${data.freeKeywords}
         ✨ プロンプト生成完了
       </h2>
 
+      {/* Tabs */}
+      <div className="flex gap-2 border-b-2" style={{ borderColor: colors.primary }}>
+        <button
+          onClick={() => setSelectedImageType("")}
+          className="px-4 py-2 font-semibold border-b-4 transition-all"
+          style={{
+            borderColor: selectedImageType === "" ? colors.primary : "transparent",
+            color: selectedImageType === "" ? colors.primary : colors.dark,
+          }}
+        >
+          📖 ストーリープロンプト
+        </button>
+        <button
+          onClick={() => setSelectedImageType("bookcover")}
+          className="px-4 py-2 font-semibold border-b-4 transition-all"
+          style={{
+            borderColor: selectedImageType === "bookcover" ? colors.primary : "transparent",
+            color: selectedImageType === "bookcover" ? colors.primary : colors.dark,
+          }}
+        >
+          📚 ブックカバー
+        </button>
+        <button
+          onClick={() => setSelectedImageType("movieposter")}
+          className="px-4 py-2 font-semibold border-b-4 transition-all"
+          style={{
+            borderColor: selectedImageType === "movieposter" ? colors.primary : "transparent",
+            color: selectedImageType === "movieposter" ? colors.primary : colors.dark,
+          }}
+        >
+          🎬 映画ポスター
+        </button>
+        <button
+          onClick={() => setSelectedImageType("graphicrecording")}
+          className="px-4 py-2 font-semibold border-b-4 transition-all"
+          style={{
+            borderColor: selectedImageType === "graphicrecording" ? colors.primary : "transparent",
+            color: selectedImageType === "graphicrecording" ? colors.primary : colors.dark,
+          }}
+        >
+          🎨 グラレコ風
+        </button>
+        <button
+          onClick={() => setSelectedImageType("presentation")}
+          className="px-4 py-2 font-semibold border-b-4 transition-all"
+          style={{
+            borderColor: selectedImageType === "presentation" ? colors.primary : "transparent",
+            color: selectedImageType === "presentation" ? colors.primary : colors.dark,
+          }}
+        >
+          📊 プレゼン風
+        </button>
+        <button
+          onClick={() => setSelectedImageType("freetext")}
+          className="px-4 py-2 font-semibold border-b-4 transition-all"
+          style={{
+            borderColor: selectedImageType === "freetext" ? colors.primary : "transparent",
+            color: selectedImageType === "freetext" ? colors.primary : colors.dark,
+          }}
+        >
+          ✨ フリー画像
+        </button>
+      </div>
+
       {/* Generated Prompt */}
       <div className="p-4 rounded-lg border-2" style={{ backgroundColor: colors.light, borderColor: colors.primary }}>
         <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>
-          📝 生成されたプロンプト：
+          {selectedImageType === "" ? "📖 ストーリープロンプト：" : `🖼️ 画像生成プロンプト（${["📚 ブックカバー", "🎬 映画ポスター", "🎨 グラレコ風", "📊 プレゼン風", "✨ フリー画像"][["bookcover", "movieposter", "graphicrecording", "presentation", "freetext"].indexOf(selectedImageType)] || ""}）：`}
         </label>
         <textarea
-          value={prompt}
+          value={selectedImageType === "" ? prompt : imagePrompt}
           readOnly
           className="w-full px-4 py-3 border rounded-lg bg-white text-xs font-mono"
           style={{ borderColor: colors.primary, color: colors.dark }}
