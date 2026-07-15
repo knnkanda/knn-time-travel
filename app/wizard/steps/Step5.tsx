@@ -258,7 +258,12 @@ ${data.year}年の時代背景、主人公の心情、当時の流行、思い�
           <li>1. 「プロンプトをコピー」でテキストをコピー</li>
           <li>2. または「ChatGPT/Claude/Gemini で開く」ボタンをクリック</li>
           <li className="text-xs font-semibold">　　↓ ボタンをクリックすると、プロンプトがコピーされて AI が開きます</li>
-          <li>3. AI のテキストボックスに貼り付けて、青春小説を生成</li>
+          <li>3. AI のテキストボックスに貼り付けて、ストーリーまたは画像を生成</li>
+          {selectedImageType !== "" && (
+            <li className="text-xs font-semibold" style={{ color: colors.primary }}>
+              💡 <strong>画像生成のコツ：</strong>当時の思い出の写真もアップロードしてください。AI が「このような雰囲気で」と参考にできます。より個人的で忠実な画像が生成されます。
+            </li>
+          )}
           <li>4. 生成後、思い出素材ファイル（YAML）と組み合わせてグラフィックレコーディング化</li>
         </ul>
       </div>
