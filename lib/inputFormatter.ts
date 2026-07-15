@@ -19,13 +19,13 @@ export function parseBirthDate(input: string): string | null {
   // ステップ1: 全角数字を半角に変換
   let normalized = toHalfWidth(input).trim();
 
-  // ステップ2: 全角の区切り文字を削除・統一
+  // ステップ2: 区切り文字と日本語を削除
   normalized = normalized
-    .replace(/[－−−]/g, "")    // 全角・半角ハイフンを削除
-    .replace(/[／/]/g, "")      // スラッシュを削除
-    .replace(/年/g, "")         // 「年」を削除
-    .replace(/月/g, "")         // 「月」を削除
-    .replace(/日/g, "");        // 「日」を削除
+    .replace(/[-－−]/g, "")      // ハイフン（全角・半角）を削除
+    .replace(/[／/]/g, "")       // スラッシュを削除
+    .replace(/年/g, "")          // 「年」を削除
+    .replace(/月/g, "")          // 「月」を削除
+    .replace(/日/g, "");         // 「日」を削除
 
   // ステップ3: YYYYMMDD 形式（8桁）を優先処理
   const eightDigitPattern = /^(\d{4})(\d{2})(\d{2})$/;
