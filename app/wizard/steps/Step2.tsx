@@ -4,6 +4,12 @@ import { useState } from "react";
 import { useWizard } from "../WizardContext";
 import { createBirthDate, calculateAge, calculateAgeAtYear, calculateSchoolGrade, toHalfWidth } from "@/lib/inputFormatter";
 
+interface AgeDisplayProps {
+  birthDate: string;
+  targetYear: number;
+  name: string;
+}
+
 const colors = {
   primary: "#FF69B4",
   dark: "#333333",
@@ -210,6 +216,24 @@ export default function Step2() {
                 className="w-full px-4 py-2 border-2 rounded-lg"
                 style={{ borderColor: colors.primary }}
               />
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="生年月日（例：1961-10-12）（任意）"
+                  value={data.lover.birthDate || ""}
+                  onChange={(e) => {
+                    const halfWidthValue = toHalfWidth(e.target.value);
+                    updateData({ lover: { ...data.lover, birthDate: halfWidthValue } });
+                  }}
+                  className="flex-1 px-4 py-2 border-2 rounded-lg text-sm"
+                  style={{ borderColor: colors.primary }}
+                />
+              </div>
+              {data.lover.birthDate && data.year && (
+                <p className="text-xs font-semibold" style={{ color: colors.primary }}>
+                  👥 当時の年齢：{calculateAgeAtYear(data.lover.birthDate, data.year)}歳
+                </p>
+              )}
             </div>
           </div>
 
@@ -225,6 +249,7 @@ export default function Step2() {
                   updateData({
                     admiration: {
                       name: data.admiration?.name || "",
+                      birthDate: data.admiration?.birthDate || "",
                       type: e.target.value as
                         | "憧れの人"
                         | "好きなタレント"
@@ -247,6 +272,7 @@ export default function Step2() {
                   updateData({
                     admiration: {
                       name: e.target.value,
+                      birthDate: data.admiration?.birthDate || "",
                       type: data.admiration?.type || "憧れの人",
                     },
                   })
@@ -254,6 +280,30 @@ export default function Step2() {
                 className="w-full px-4 py-2 border-2 rounded-lg"
                 style={{ borderColor: colors.primary }}
               />
+              <div className="flex gap-2">
+                <input
+                  type="text"
+                  placeholder="生年月日（例：1960-05-20）（任意）"
+                  value={data.admiration?.birthDate || ""}
+                  onChange={(e) => {
+                    const halfWidthValue = toHalfWidth(e.target.value);
+                    updateData({
+                      admiration: {
+                        name: data.admiration?.name || "",
+                        type: data.admiration?.type || "憧れの人",
+                        birthDate: halfWidthValue,
+                      },
+                    });
+                  }}
+                  className="flex-1 px-4 py-2 border-2 rounded-lg text-sm"
+                  style={{ borderColor: colors.primary }}
+                />
+              </div>
+              {data.admiration?.birthDate && data.year && (
+                <p className="text-xs font-semibold" style={{ color: colors.primary }}>
+                  ⭐ 当時の年齢：{calculateAgeAtYear(data.admiration.birthDate, data.year)}歳
+                </p>
+              )}
             </div>
           </div>
         </div>
