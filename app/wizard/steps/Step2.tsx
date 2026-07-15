@@ -216,22 +216,26 @@ export default function Step2() {
                 className="w-full px-4 py-2 border-2 rounded-lg"
                 style={{ borderColor: colors.primary }}
               />
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="生年月日（例：1961-10-12）（任意）"
-                  value={data.lover.birthDate || ""}
-                  onChange={(e) => {
-                    const halfWidthValue = toHalfWidth(e.target.value);
-                    updateData({ lover: { ...data.lover, birthDate: halfWidthValue } });
-                  }}
-                  className="flex-1 px-4 py-2 border-2 rounded-lg text-sm"
-                  style={{ borderColor: colors.primary }}
-                />
-              </div>
-              {data.lover.birthDate && data.year && (
+              <input
+                type="text"
+                placeholder="当時の年齢（例：12、１２歳など）（任意）"
+                value={data.lover.ageAtThatTime !== undefined ? data.lover.ageAtThatTime : ""}
+                onChange={(e) => {
+                  const halfWidthValue = toHalfWidth(e.target.value).replace(/歳/g, "");
+                  const age = halfWidthValue ? parseInt(halfWidthValue, 10) : undefined;
+                  updateData({
+                    lover: {
+                      ...data.lover,
+                      ageAtThatTime: isNaN(age as any) ? undefined : age
+                    }
+                  });
+                }}
+                className="w-full px-4 py-2 border-2 rounded-lg"
+                style={{ borderColor: colors.primary }}
+              />
+              {data.lover.ageAtThatTime !== undefined && (
                 <p className="text-xs font-semibold" style={{ color: colors.primary }}>
-                  👥 当時の年齢：{calculateAgeAtYear(data.lover.birthDate, data.year)}歳
+                  👥 当時の年齢：{data.lover.ageAtThatTime}歳
                 </p>
               )}
             </div>
@@ -249,7 +253,7 @@ export default function Step2() {
                   updateData({
                     admiration: {
                       name: data.admiration?.name || "",
-                      birthDate: data.admiration?.birthDate || "",
+                      ageAtThatTime: data.admiration?.ageAtThatTime,
                       type: e.target.value as
                         | "憧れの人"
                         | "好きなタレント"
@@ -272,7 +276,7 @@ export default function Step2() {
                   updateData({
                     admiration: {
                       name: e.target.value,
-                      birthDate: data.admiration?.birthDate || "",
+                      ageAtThatTime: data.admiration?.ageAtThatTime,
                       type: data.admiration?.type || "憧れの人",
                     },
                   })
@@ -280,28 +284,27 @@ export default function Step2() {
                 className="w-full px-4 py-2 border-2 rounded-lg"
                 style={{ borderColor: colors.primary }}
               />
-              <div className="flex gap-2">
-                <input
-                  type="text"
-                  placeholder="生年月日（例：1960-05-20）（任意）"
-                  value={data.admiration?.birthDate || ""}
-                  onChange={(e) => {
-                    const halfWidthValue = toHalfWidth(e.target.value);
-                    updateData({
-                      admiration: {
-                        name: data.admiration?.name || "",
-                        type: data.admiration?.type || "憧れの人",
-                        birthDate: halfWidthValue,
-                      },
-                    });
-                  }}
-                  className="flex-1 px-4 py-2 border-2 rounded-lg text-sm"
-                  style={{ borderColor: colors.primary }}
-                />
-              </div>
-              {data.admiration?.birthDate && data.year && (
+              <input
+                type="text"
+                placeholder="当時の年齢（例：20、２０歳など）（任意）"
+                value={data.admiration?.ageAtThatTime !== undefined ? data.admiration.ageAtThatTime : ""}
+                onChange={(e) => {
+                  const halfWidthValue = toHalfWidth(e.target.value).replace(/歳/g, "");
+                  const age = halfWidthValue ? parseInt(halfWidthValue, 10) : undefined;
+                  updateData({
+                    admiration: {
+                      name: data.admiration?.name || "",
+                      ageAtThatTime: isNaN(age as any) ? undefined : age,
+                      type: data.admiration?.type || "憧れの人",
+                    },
+                  });
+                }}
+                className="w-full px-4 py-2 border-2 rounded-lg"
+                style={{ borderColor: colors.primary }}
+              />
+              {data.admiration?.ageAtThatTime !== undefined && (
                 <p className="text-xs font-semibold" style={{ color: colors.primary }}>
-                  ⭐ 当時の年齢：{calculateAgeAtYear(data.admiration.birthDate, data.year)}歳
+                  ⭐ 当時の年齢：{data.admiration.ageAtThatTime}歳
                 </p>
               )}
             </div>

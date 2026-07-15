@@ -18,12 +18,12 @@ export interface WizardData {
   lover: {
     name: string;
     type?: "恋人" | "片思い" | "初恋";
-    birthDate?: string;
+    ageAtThatTime?: number;
   };
   admiration?: {
     name: string;
     type?: "憧れの人" | "好きなタレント" | "スポーツ選手";
-    birthDate?: string;
+    ageAtThatTime?: number;
   };
   friend: {
     name: string;
@@ -53,8 +53,8 @@ const defaultData: WizardData = {
   prefecture: "",
   city: "",
   mainCharacter: { name: "", birthDate: "", gender: "other" },
-  lover: { name: "", type: "恋人", birthDate: "" },
-  admiration: { name: "", type: "憧れの人", birthDate: "" },
+  lover: { name: "", type: "恋人", ageAtThatTime: undefined },
+  admiration: { name: "", type: "憧れの人", ageAtThatTime: undefined },
   friend: { name: "", character: "" },
   locations: "",
   media: "",
