@@ -67,7 +67,7 @@ export default function Step2() {
   return (
     <div className="bg-white rounded-lg shadow-md p-8 space-y-6">
       <h2 className="text-2xl font-bold mb-6" style={{ color: colors.dark }}>
-        STEP 2: 登場人物
+        STEP 1: 登場人物
       </h2>
 
       {/* Main Character */}

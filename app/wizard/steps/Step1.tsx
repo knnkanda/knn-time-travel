@@ -25,6 +25,47 @@ export default function Step1() {
   const { data, updateData } = useWizard();
   const [yearInput, setYearInput] = useState(String(data.year || ""));
 
+  // 主人公の生年月日と学校情報から西暦を逆算
+  const calculateYearFromBirthDate = () => {
+    if (!data.mainCharacter.birthDate) return null;
+
+    try {
+      const birthDate = new Date(data.mainCharacter.birthDate);
+      const birthYear = birthDate.getFullYear();
+
+      // 学年から年齢を推定（4月入学と仮定）
+      const schoolYearMap: { [key: string]: number } = {
+        "中学1年": 12,
+        "中学2年": 13,
+        "中学3年": 14,
+        "高校1年": 15,
+        "高校2年": 16,
+        "高校3年": 17,
+        "大学1年": 18,
+        "大学2年": 19,
+        "大学3年": 20,
+        "大学4年": 21,
+        "社会人1年": 22,
+        "社会人2年": 23,
+        "社会人3年": 24,
+      };
+
+      // TODO: あとでこの値を取得するため、学年情報を WizardContext に追加する必要がある
+      // ここでは簡易版として、高校3年生（17歳）を仮定
+      const ageAtTheTime = 17;
+
+      const year = birthYear + ageAtTheTime;
+      if (year >= 1950 && year <= 2026) {
+        return year;
+      }
+    } catch {
+      return null;
+    }
+    return null;
+  };
+
+  const calculatedYear = calculateYearFromBirthDate();
+
   const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const input = e.target.value;
     setYearInput(input);
@@ -46,10 +87,25 @@ export default function Step1() {
   return (
     <div className="bg-white rounded-lg shadow-md p-8">
       <h2 className="text-2xl font-bold mb-6" style={{ color: colors.dark }}>
-        STEP 1: いつ・どこで
+        STEP 2: いつ・どこで
       </h2>
+      <p className="text-sm mb-6" style={{ color: colors.dark }}>
+        主人公の情報から、思い出の時代を確定します
+      </p>
 
       <div className="space-y-6">
+        {/* Calculated Year from Birth Date */}
+        {calculatedYear && (
+          <div className="p-4 rounded-lg" style={{ backgroundColor: colors.light }}>
+            <p className="text-sm font-semibold" style={{ color: colors.dark }}>
+              📅 主人公の情報から推定：{yearToEra(calculatedYear)}
+            </p>
+            <p className="text-xs mt-1" style={{ color: colors.dark }}>
+              高校3年生時の推定です。別の学年の場合は下で修正してください。
+            </p>
+          </div>
+        )}
+
         {/* Year Input */}
         <div>
           <label className="block text-sm font-semibold mb-2" style={{ color: colors.dark }}>
@@ -58,14 +114,14 @@ export default function Step1() {
           <div className="flex gap-4 items-center">
             <input
               type="text"
-              placeholder="1950〜2026（全角・半角OK）"
+              placeholder={calculatedYear ? `例: ${calculatedYear}` : "1950〜2026（全角・半角OK）"}
               value={yearInput}
               onChange={handleYearChange}
               className="px-4 py-3 border-2 rounded-lg text-lg font-semibold flex-1"
               style={{ borderColor: colors.primary, color: colors.dark }}
             />
             <div className="text-lg font-semibold px-4" style={{ color: colors.primary }}>
-              {yearToEra(data.year)}
+              {yearToEra(data.year || calculatedYear || 1983)}
             </div>
           </div>
         </div>

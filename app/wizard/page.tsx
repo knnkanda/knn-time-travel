@@ -18,8 +18,8 @@ function WizardContent() {
   const { currentStep, setCurrentStep } = useWizard();
 
   const steps = [
-    { num: 1, label: "いつ・どこで", component: Step1 },
-    { num: 2, label: "登場人物", component: Step2 },
+    { num: 1, label: "登場人物", component: Step2 },
+    { num: 2, label: "いつ・どこで", component: Step1 },
     { num: 3, label: "舞台・シチュエーション", component: Step3 },
     { num: 4, label: "ストーリー・作風", component: Step4 },
   ];
